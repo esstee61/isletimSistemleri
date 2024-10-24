@@ -14,7 +14,7 @@ class Main
                                "TaESfdTjklTESTghj", "tesaduf", "tetetetetettest", 
                                "t", "e", "x", "tets", "etst", "teest", "teat", 
                                "zxcvbnmyuiophjklqwsdTETghjkl_6TEST", "TESkereTESkereTESkere",
-                               "teat", "1est", ""};
+                               "teat", "1est", "", "sadltjaslkj;asldkjfsaltkjslakdrjasdf asdfqwerpoi2134124334asld;ikjlajsdft;ekasrt"};
 
         // Measure time for JaroWinkler
         long startJaroWinkler = System.nanoTime();
