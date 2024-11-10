@@ -1,4 +1,5 @@
-class Solution {
+package similarityFunctions;
+public class Solution {
     public static int isSubsequence(String s, String t) {
         int sn = s.length();
         int tn = t.length();
@@ -28,7 +29,7 @@ class Solution {
 
         if (sn == (j-start+1) && i == sn) return max(res, (int) (80 + (double) sn / tn * 20));  // full and partial match
 
-        return max(res, (int) (((double) i/sn + (double) ((sn<tn) ? sn: tn)/(j-start+1) + ((j-start+1)/tn))*25));  // half match
+        return max(res, (int) (((double) i/sn + (double) ((sn<tn) ? sn: tn)/(j-start+1) + (double) ((j-start+1)/tn))*25));  // half match
     }
 
     public static int max(int a, int b) {

@@ -1,3 +1,4 @@
+package similarityFunctions;
 public class StringSimilarity {
 
     // Function to calculate the modified Levenshtein Distance with custom costs

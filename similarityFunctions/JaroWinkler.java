@@ -1,3 +1,4 @@
+package similarityFunctions;
 public class JaroWinkler {
 
     public static double jaroDistance(String s1, String s2) {
