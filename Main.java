@@ -10,28 +10,34 @@ class Main
 
         // filter olmadan
         FileSearch fs = new FileSearch(path, keyword);
-        fs.search(true);  // aramayi baslat
+        fs.search();  // aramayi baslat
         
         // print
         Iterator<FileScore> it = fs.results.iterator();
+        System.out.println(fs.results.size() + " tane dosya siralandi");
         while(it.hasNext()) {
-            System.out.println(it.next().file.getName());
+            FileScore fsTemp = it.next();
+            System.out.print(fsTemp.similarity);
+            System.out.println(" " + fsTemp.file.getName());
         }
 
         System.out.println(">==============<");  // ayrac
 
         // filter ile 
         FileSearchFilter filter = new FileSearchFilter();  // filter olustur
-        filter.isHidden = true;  // konfiguasyon
+        filter.isHidden = true;  // konfigurasyon
         filter.minSimilarity = 0;
 
         fs = new FileSearch(path, keyword, filter);
-        fs.search(true);
+        fs.search();
         
         // print
         it = fs.results.iterator();
+        System.out.println(fs.results.size() + " tane dosya siralandi");
         while(it.hasNext()) {
-            System.out.println(it.next().file.getName());
+            FileScore fsTemp = it.next();
+            System.out.print(fsTemp.similarity);
+            System.out.println(" " + fsTemp.file.getName());
         }
     }
 }

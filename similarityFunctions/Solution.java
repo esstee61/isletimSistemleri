@@ -24,7 +24,7 @@ public class Solution {
         if (sn > i*2 || tn*2 < sn) return 0;  // en az ilk yarisi eslesmediyse 0 dondur
 
         int res = 0;
-        if (j - start + 1 > sn * 2 || tn-j > sn)  // "tetetetest" ve "TaESfdTjklTESTgh" vb durumlar icin
+        if (j - start + 1 > sn || tn-j > sn)  // "tetetetest" ve "TaESfdTjklTESTgh" vb durumlar icin
             res = isSubsequence(s, t.substring(start+1, tn));
 
         if (sn == (j-start+1) && i == sn) return max(res, (int) (80 + (double) sn / tn * 20));  // full and partial match

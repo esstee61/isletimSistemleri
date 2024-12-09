@@ -7,7 +7,7 @@ public class Test
         String find = "test";
 
         // Test cases
-        String[] file_names = {"test", "asdf", "tEsT12sadf124", "Test2", 
+        String[] file_names = {"qwerty.test", "asdf", "tEsT12sadf124", "Test2", 
                                "1asdf2421tESt", "asdfTesT124", "TEqwerjklxST", 
                                "TEzxcTESTcvbnST", "ttgheeklsskkTT", "abcdefghijklmnopqrstuvwxyz", 
                                "iceTEaMachineSAuTomat", "tes1", "tes", "tes1t", 
@@ -21,7 +21,7 @@ public class Test
         // Measure time for JaroWinkler
         long startJaroWinkler = System.nanoTime();
         for (String str : file_names) {
-            int similarity = (int) (JaroWinkler.jaroWinkler(find, str.toLowerCase(), 0.2) * 100);
+            // int similarity = (int) (JaroWinkler.jaroWinkler(find, str.toLowerCase(), 0.2) * 100);
             // System.out.print(str);
             // System.out.print(" => ");
             // System.out.println(similarity);
@@ -34,9 +34,9 @@ public class Test
         long startIsSubsequence = System.nanoTime();
         for (String str : file_names) {
             int result = Solution.isSubsequence(find, str.toLowerCase());
-            // System.out.print(str);
-            // System.out.print(" => ");
-            // System.out.println(result);
+            System.out.print(str);
+            System.out.print(" => ");
+            System.out.println(result);
         }
         long endIsSubsequence = System.nanoTime();
         long durationIsSubsequence = endIsSubsequence - startIsSubsequence;
@@ -44,7 +44,7 @@ public class Test
 
         long startSub = System.nanoTime();
         for (String str : file_names) {
-            int Sub = Re.isSubstr(find, str.toLowerCase());
+            // int Sub = Re.isSubstr(find, str.toLowerCase());
             // System.out.print(str);
             // System.out.print(" => ");
             // System.out.println(Sub);
