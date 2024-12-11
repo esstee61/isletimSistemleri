@@ -9,7 +9,7 @@ public class FileScore {
         this.file = file;
         filenameLen = file.getName().length();
         similarity = exactMatch ? isSubstr(file.getName().toLowerCase(), keyword)
-                                 :isSubsequence(file.getName().toLowerCase(), keyword);
+                                : isSubsequence(file.getName().toLowerCase(), keyword);
     }
 
     private int isSubsequence(String fileName, String keyword) {

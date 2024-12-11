@@ -1,4 +1,6 @@
 import java.util.Iterator;
+import java.io.File;
+import java.io.IOException;
 
 class Main 
 {
@@ -6,7 +8,7 @@ class Main
     {   
         // inputs
         String path = System.getProperty("user.dir") + "\\deneme klasoru";
-        String keyword = "tESt";
+        String keyword = "test";
 
         // filter olmadan
         FileSearch fs = new FileSearch(path, keyword);
@@ -19,6 +21,29 @@ class Main
             FileScore fsTemp = it.next();
             System.out.print(fsTemp.similarity);
             System.out.println(" " + fsTemp.file.getName());
+            System.out.println("Dosya Yolu: " + fsTemp.file.getAbsolutePath());
+
+            String filePath = fsTemp.file.getAbsolutePath();
+            try {
+                // Dosya nesnesi oluştur
+                File file = new File(filePath);
+    
+                if (!file.exists()) {
+                    System.out.println("Dosya bulunamadı: " + filePath);
+                    return;
+                }
+    
+                // Explorer'da dosya seçili halde aç
+                String command = "explorer.exe /select," + file.getAbsolutePath();
+                Runtime.getRuntime().exec(command);
+    
+            } catch (IOException e) {
+                System.err.println("Hata: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+
+            System.out.println();
         }
 
         System.out.println(">==============<");  // ayrac

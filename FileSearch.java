@@ -55,7 +55,7 @@ public class FileSearch {
             if (!onlyFiles || file.isFile()) { // if it is not file and onlyFiles option is true: dont check similarity:
                 FileScore fileScore = new FileScore(file, keyword, exactMatch);
                 if (fileScore.similarity >= minSimilarity) {
-                        results.add(fileScore);
+                    results.add(fileScore);
                 }
             }
 
