@@ -1,10 +1,11 @@
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FileSearch {
+
     private String path, keyword;
     private short minSimilarity = 70;
     private boolean onlyFiles = false;
@@ -15,10 +16,13 @@ public class FileSearch {
         }
     };
     // using treeset for auto sort by minSimilarity then length of the name then path (for unique value)
-    // Change the data type to ConcurrentSkipListSet<FileScore> for safe-thread 
-    TreeSet<FileScore> results = new TreeSet<FileScore>(Comparator.comparing((FileScore fs) -> -fs.similarity)
-                                                              .thenComparing((FileScore fs) -> fs.filenameLen)
-                                                              .thenComparing((FileScore fs) -> fs.file.getPath()));
+    // Change the data type to ConcurrentSkipListSet<FileScore> for safe-thread
+
+    ConcurrentSkipListSet<FileScore> results = new ConcurrentSkipListSet<>(
+        Comparator.comparing((FileScore fs) -> -fs.similarity)
+                  .thenComparing((FileScore fs) -> fs.filenameLen)
+                  .thenComparing((FileScore fs) -> fs.file.getPath())
+    );
 
     FileSearch (String path, String keyword) {  // default search
         this.path = path;
@@ -45,12 +49,25 @@ public class FileSearch {
     }
 
     public void search() {
-        recSearch(new File(path));
+        AtomicInteger tasks = new AtomicInteger(1);
+        ThreadPool.executor.submit(() -> recSearch(new File(path), tasks));
+
+        while (tasks.get() > 0) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+
+        ThreadPool.executor.shutdown();
     }
 
-    public void recSearch(File folder) {
+    public void recSearch(File folder, AtomicInteger tasks) {
         for (File file : folder.listFiles(options)) {  // each file in the folder
-            
+            //System.out.println(Thread.currentThread().getName() + " is checking " + file.getName() + " at " + file.getPath());
+
             // check name similarity
             if (!onlyFiles || file.isFile()) { // if it is not file and onlyFiles option is true: dont check similarity:
                 FileScore fileScore = new FileScore(file, keyword, exactMatch);
@@ -60,8 +77,12 @@ public class FileSearch {
             }
 
             // recursive call for dirs
-            if (file.isDirectory())
-                recSearch(file);  
+            if (file.isDirectory()){
+                tasks.incrementAndGet();
+                ThreadPool.executor.submit(() -> recSearch(file, tasks));
+            }
         }
+
+        tasks.decrementAndGet();
     }
 }
