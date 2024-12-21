@@ -1,6 +1,6 @@
 import java.io.File;
 
-public class FileScore { // file objelerini score ile özdeşleştirmek için
+public class FileScore {  // file objelerini score ile özdeşleştirmek için
     File file;
     int filenameLen;
     int score;
@@ -36,14 +36,14 @@ public class FileScore { // file objelerini score ile özdeşleştirmek için
         j--; // last index of the match
 
         if (keywordLen > i * 2 || nameLen * 2 < keywordLen)
-            return 0; // aratılan kelimenin en az ilk yarısı eşleşmediyse 0 döndür
+            return 0;  // aratılan kelimenin en az ilk yarısı eşleşmediyse 0 döndür
 
         int res = 0;
-        if (j - start + 1 > keywordLen || nameLen - j > keywordLen) // "tetetetest" ve "TaESfdTjklTESTgh" vb durumlar için
+        if (j - start + 1 > keywordLen || nameLen - j > keywordLen)  // "tetetetest" ve "TaESfdTjklTESTgh" vb durumlar için
             res = isSubsequence(fileName.substring(start + 1, nameLen), keyword);
 
         if (keywordLen == (j - start + 1) && i == keywordLen)
-            return Math.max(res, (int) (80 + (double) keywordLen / nameLen * 20)); // full and partial match
+            return Math.max(res, (int) (80 + (double) keywordLen / nameLen * 20));  // full and partial match
 
         // half match
         return Math.max(res, (int) (((double) i / keywordLen +

@@ -1,35 +1,39 @@
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FileSearch {
+
     private String path, keyword;
     private short minSimilarity = 70;
     private boolean onlyFiles = false;
     private boolean exactMatch = false;
-    private FileFilter options = new FileFilter() { // to do not show hidden files defaultly
+    private FileFilter options = new FileFilter() {  // to do not show hidden files defaultly
         public boolean accept(File f) {
             return !f.isHidden();
         }
     };
-    // using treeset for auto sort by minSimilarity then length of the name then
-    // path (for unique value)
+    // using treeset for auto sort by minSimilarity then 
+    // length of the name then path (for unique value)
     // Change the data type to ConcurrentSkipListSet<FileScore> for safe-thread
-    TreeSet<FileScore> results = new TreeSet<FileScore>(Comparator.comparing((FileScore fs) -> -fs.score)
+
+    ConcurrentSkipListSet<FileScore> results = new ConcurrentSkipListSet<>(
+        Comparator.comparing((FileScore fs) -> -fs.score)
             .thenComparing((FileScore fs) -> fs.filenameLen)
             .thenComparing((FileScore fs) -> fs.file.getPath()));
 
-    FileSearch(String path, String keyword) { // default search
+    FileSearch(String path, String keyword) {  // default search
         this.path = path;
         this.keyword = keyword.toLowerCase();
     }
 
-    FileSearch(String path, String keyword, FileSearchFilter opt) { // search with filter
+    FileSearch(String path, String keyword, FileSearchFilter opt) {  // search with filter
         this.path = path;
         this.keyword = keyword.toLowerCase();
         minSimilarity = opt.minSimilarity;
-        onlyFiles = (opt.onlyFolders) ? false : opt.onlyFiles; // Onlyfolder onlyfilestan daha oncelikli
+        onlyFiles = (opt.onlyFolders) ? false : opt.onlyFiles;  // Onlyfolder onlyfilestan daha oncelikli
         exactMatch = opt.exactMatch;
         options = new FileFilter() {
             public boolean accept(File f) {
@@ -41,20 +45,32 @@ public class FileSearch {
                     if (!f.isDirectory())
                         return false;
                 }
+                if (f.isDirectory()) return true;  // not check size on dirs
                 return opt.maxSize * 1024 >= f.length() && f.length() >= opt.minSize * 1024;
             }
         };
     }
 
-    public void search() { // aramayi baslatmak icin yardimci metod
-        recSearch(new File(path));
+    public void search() {  // aramayi baslatmak icin yardimci metod
+        AtomicInteger tasks = new AtomicInteger(1);
+        ThreadPool.executor.submit(() -> recSearch(new File(path), tasks));
+
+        while (tasks.get() > 0) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
     }
 
-    public void recSearch(File folder) {
-        for (File file : folder.listFiles(options)) { // each file in the folder
+    public void recSearch(File folder, AtomicInteger tasks) {
+        for (File file : folder.listFiles(options)) {  // each file in the folder
+            // System.out.println(Thread.currentThread().getName() + " is checking " + file.getName() + " at " + file.getPath());
 
-            // get name score
-            if (!onlyFiles || file.isFile()) { // if it is not file and onlyFiles option is true: dont check similarity:
+            // get file name match score
+            if (!onlyFiles || file.isFile()) {  // if it is not file and onlyFiles option is true: dont check similarity:
                 FileScore fileScore = new FileScore(file, keyword, exactMatch);
                 if (fileScore.score >= minSimilarity) {
                     results.add(fileScore);
@@ -62,8 +78,12 @@ public class FileSearch {
             }
 
             // recursive call for dirs
-            if (file.isDirectory())
-                recSearch(file);
-        }
+            if (file.isDirectory()) {
+                tasks.incrementAndGet();
+                ThreadPool.executor.submit(() -> recSearch(file, tasks));
+            }
+        }        
+
+        tasks.decrementAndGet();
     }
 }
