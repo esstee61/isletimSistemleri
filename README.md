@@ -15,7 +15,7 @@ createTestDirectory.bat
 |||
 |----------|---------------|
 |`Main.java`             | Programın örnek kullanımı ve test etme      |
-| `App.java`             |   GUI                                    |
+|`App.java`              |   GUI                                    |
 |`FileSearch.java`       | Ana class (Dosya içinde gezinme algoritması)      |
 |`FileScore.java`        | Verilen dosyanın benzerlik oranını bulma (Dosya ismi benzerlik algoritması)     |
 |`FileSearchFilter.java` | Filtreleme seçenekleri için yardımcı class    |

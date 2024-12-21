@@ -218,9 +218,12 @@ public class App extends JFrame {
                     int selectedRow = resultTable.getSelectedRow();
                     if (selectedRow != -1) {
                         String filePath = (String) tableModel.getValueAt(selectedRow, 1);  // Dosya yolu sütununu al
+
+                        // çift tıklanan dosyayı Explorer'da seçili olarak aç
                         try {
-                            Desktop.getDesktop().open(new File(filePath));  // Dosyayı veya dizini aç
-                        } catch (IOException ex) {
+                            String[] command = {"explorer.exe", "/select,", filePath};
+                            Runtime.getRuntime().exec(command);
+                        } catch (IOException exc) {
                             JOptionPane.showMessageDialog(null, "Dosya açılamıyor!", "Hata", JOptionPane.ERROR_MESSAGE);
                         }
                     }
