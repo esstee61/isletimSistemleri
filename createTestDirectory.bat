@@ -1,17 +1,19 @@
 mkdir "deneme klasoru"
 cd "deneme klasoru"
-mkdir "test" "asdf" "Test2" "ttgheeklsskkTT" "TExyzST"
+mkdir "Fotoğraflar" "Videolar" "Belgeler" "Müzikler" ".gizli" "test"
 touch "test.c" "qwerty.test" "asdfTesT124.java" "TEqwerjklxST.png" "TEzxcTESTcvbnST.cs" "abcdefghijklmnopqrstuvw.xyz"
+attrib +h .gizli
 attrib +h test.c
 cd test
-touch "iceTEaMachineSAuTomat.txt" "tes1.txt" "tes.txt" "tes1" "test"
-cd ../asdf
-touch "t4st.php" "t432.txt" "te.bmp" "TESqwer.bmp" "teeeeeeest.bmp" "TESkereTESkereTESkere"
-cd ../Test2
-touch "enteresant.py" "kestane.py" "Latest.py" "ttteeesssttt.py" "sadltjaslkj;asldkjfsaltkjslakdrjasdf ;ikjlajsdft;ekasrt.py"
-cd ../ttgheeklsskkTT
-touch "TaESfdTjklTESTghj.cs" "tesaduf.cs" "tetetetetettest.cs" "zxcvbnmyuiophjklqwsdTETghjkl_6TEST.cs"
-cd ../TExyzST
-touch "t.txt" "e.txt" "x.c" "tets.c" "etst.c" "teest.c" "teat.c" "teat.c" "1est.c"
+touch "main.c" "test1.mp3" 
+mkdir test
+cd ../Fotoğraflar
+touch "foto1.jpg" "foto2.jpg" "foto3.jpg" "foto4.jpg" "foto5.jpg" "foto6.jpg"
+cd ../Videolar
+touch "vid1.mp4" "vid2.mp4" "vid3.mp4" "vid4.mp4" "vid5.mp4"
+cd ../Belgeler
+touch "asdf.xml" "asdf2.xlsx" "asdf3.docx" "qwerty.xml"
+cd ../Müzikler
+touch "asdfgTEST.mp3" "test.mp3" "test12345.mp3" "tes1.mp3" "tes12345.txt" "teASDst.mp3" "tersane.mp3"
 cd ..
 cd ..
