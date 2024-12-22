@@ -1,5 +1,5 @@
 public class FileSearchFilter {
-    public short minSimilarity = 70;  // 0-100
+    public short minSimilarity = 70;  // 0-100 // !! it is inconsistent below 50
     public long minSize = 0;  // KB
     public long maxSize = Integer.MAX_VALUE;  // KB
     public boolean isHidden = false;  // true to show hidden files too
